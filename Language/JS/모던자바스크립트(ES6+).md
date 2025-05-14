@@ -2,23 +2,74 @@
 
 ## 1. `var`, `let`, `const`의 차이
 - **`var`**
-  - 함수 스코프를 가짐.
-  - 중복 선언 가능.
-  - 선언 전에 접근 가능하지만 `undefined`로 초기화됨 (호이스팅).<br>
-  <sub>호이스팅 : 자바스크립트에서 변수 선언과 함수 선언이 해당 스코프의 최상단으로 끌어올려지는 동작을 의미. </sub> 
-  - 블록 스코프를 지원하지 않음.
+  - **함수 스코프**를 가짐 (블록 스코프를 지원하지 않음).
+  - **중복 선언 가능**.
+  - 선언 전에 접근 가능하지만 값은 `undefined`로 초기화됨 (**호이스팅**).
+    - <sub>호이스팅: 변수 선언과 함수 선언이 해당 스코프의 최상단으로 끌어올려지는 동작.</sub>
 
 - **`let`**
-  - 블록 스코프를 가짐.
-  - 중복 선언 불가능.
-  - 선언 전에 접근 불가능 (Temporal Dead Zone).
+  - **블록 스코프**를 가짐.
+  - **중복 선언 불가능**.
+  - 선언 전에 접근 불가능 (**Temporal Dead Zone**, TDZ).
+    - TDZ: 변수가 선언되기 전까지는 해당 변수에 접근할 수 없는 구간.
 
 - **`const`**
-  - 블록 스코프를 가짐.
-  - 중복 선언 불가능.
+  - **블록 스코프**를 가짐.
+  - **중복 선언 불가능**.
   - 선언과 동시에 초기화가 필요.
-  - 값 변경 불가능 (단, 객체의 경우 속성은 변경 가능). 
-  - `const`는 변수 자체를 재할당할 수 없지만, 객체나 배열의 내부 속성은 변경 가능.
+  - **값 재할당 불가능** (단, 객체나 배열의 내부 속성은 변경 가능).
+    - `const`는 변수 자체를 재할당할 수 없지만, 객체나 배열의 내부 속성은 변경 가능.(변수가 참조하는 **메모리 주소**(상수)를 변경할 수 없음)
+
+### 주요 차이점 요약
+
+<table>
+  <thead>
+    <tr>
+      <th>특징</th>
+      <th>var</th>
+      <th>let</th>
+      <th>const</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>스코프</td>
+      <td>함수 스코프</td>
+      <td>블록 스코프</td>
+      <td>블록 스코프</td>
+    </tr>
+    <tr>
+      <td>중복 선언</td>
+      <td>가능</td>
+      <td>불가능</td>
+      <td>불가능</td>
+    </tr>
+    <tr>
+      <td>선언 전 접근</td>
+      <td>가능 (undefined)</td>
+      <td>불가능 (TDZ)</td>
+      <td>불가능 (TDZ)</td>
+    </tr>
+    <tr>
+      <td>초기화 필요 여부</td>
+      <td>선택</td>
+      <td>선택</td>
+      <td>필수</td>
+    </tr>
+    <tr>
+      <td>값 재할당</td>
+      <td>가능</td>
+      <td>가능</td>
+      <td>불가능</td>
+    </tr>
+    <tr>
+      <td>객체/배열 내부 변경</td>
+      <td>가능</td>
+      <td>가능</td>
+      <td>가능</td>
+    </tr>
+  </tbody>
+</table>
 
 ### 예시
 ```
@@ -29,12 +80,21 @@ console.log(x); // 20
 
 // let
 let y = 10;
-// let y = 20; // SyntaxError: 'y' 는 이미 선언 되어있다.
+// let y = 20; // SyntaxError: 'y' has already been declared
 
 // const
 const z = 10;
-// z = 20; // 타입 오류. 재할당을 하게되면 주소값을 변경하는 것이기 때문에 const는 재할당이 불가능하다. pointer가 가리키는 주소값을 변경할 수 없다.
+// z = 20; // TypeError: Assignment to constant variable
 
+// 객체 내부 속성 변경 (const)
+const obj = { a: 1 };
+obj.a = 2; // 가능 (객체 내부 속성 변경)
+console.log(obj); // { a: 2 }
+
+// const 변수 자체 재할당 시 오류
+// obj = { b: 2 }; // TypeError: Assignment to constant variable
+// const는 변수가 참조하는 메모리 주소를 변경할 수 없음
+// 즉, 객체 자체를 새로운 객체로 대체할 수 없음
 ```
 
 ## 2. 단축 프로퍼티 (Shorthand Properties)
